@@ -1,0 +1,672 @@
+\documentclass[11pt]{article}
+
+%% Packages
+\usepackage{amsmath, amsthm, amsfonts, amssymb, amscd}
+\usepackage{thmtools}
+\usepackage{mathrsfs}
+\usepackage{cancel}
+\usepackage[margin=3cm]{geometry}
+\usepackage{empheq}
+\usepackage{framed}
+\usepackage[most]{tcolorbox}
+\usepackage{proof}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{graphicx}
+\usepackage{setspace}
+
+%% Figures Packages
+
+%% Pagestyle
+\newlength{\tabcont}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{0.05in}
+\colorlet{shadecolor}{orange!15}
+\parindent 0in
+\geometry{margin=1in, headsep=0.25in}
+\newtheorem{note}{Nota}
+
+%% NewCommands
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mf}[1]{\mathfrak{#1}}
+\newcommand{\msf}[1]{\mathsf{#1}}
+\newcommand{\mbb}[1]{\mathbb{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\im}[1]{\text{\normalfont Im}(#1)}
+\newcommand{\subs}[2]{\setcounter{subsection}{#1 - 1}\subsection{#2}}
+\newcommand\overtext[2]
+{\stackrel{\mathclap{\normalfont\mbox{#1}}}{#2}}
+\renewcommand\qedsymbol{$\dashv$}
+\newcommand{\bigslant}[2]{{\raisebox{.2em}{$#1$}\left/\raisebox{-.2em}{$#2$}\right.}}
+\newcommand{\rp}[1]{{\left(#1\right)}}
+\newcommand{\db}[1]{{[\![#1]\!]}}
+\newcommand\restr[2]{{\left.\kern-\nulldelimiterspace#1\vphantom{\big|}\right|_{#2}}}
+\newcommand\floor[1]{{\left\lfloor#1\right\rfloor}}
+\newcommand\ceil[1]{{\left\lceil#1\right\rceil}}
+\renewcommand*{\proofname}{Prova}
+\renewcommand\refname{Referências Bibliográficas}
+\newcommand{\cl}[1]{\colorlet{shadecolor}{#1}}
+\DeclareMathOperator{\sen}{sen}
+\newcommand{\dd}{\mathrm{d}}
+\renewcommand{\figurename}{Fig.}
+\renewcommand{\ln}[1]{{\mathop{\ell n\rp{#1}}}}
+\renewcommand{\contentsname}{Sumário}
+\newcommand{\ltr}{<_\mbb{R}}
+\newcommand{\leqr}{\leq_\mbb{R}}
+\newcommand{\gtr}{>_\mbb{R}}
+\newcommand{\geqr}{\geq_\mbb{R}}
+
+%% Theorems, definitions, corollaries and lemmas
+\declaretheoremstyle[bodyfont=\normalfont]{normalbody}
+\declaretheorem[numberwithin=section, style=normalbody, name=Teorema]{theorem}
+\declaretheorem[numberwithin=section, style=normalbody, name=Definição]{definition}
+\declaretheorem[numberwithin=section, style=normalbody, name=Corolário]{corollary}
+\declaretheorem[numberwithin=section, style=normalbody, name=Lema]{lemma}
+\declaretheorem[numbered = no, style=normalbody, name=Solução]{solution}
+\declaretheorem[numberwithin=subsection, style=normalbody, name=Exercício]{exercise}
+
+%% Document
+
+\begin{document}
+\thispagestyle{empty}
+
+\begin{center}
+{\LARGE \bf $\{[\mbb{R}]\}=\bigslant{\text{Mod}^\mc{S}(\text{OF}+\text{AoC})}{\cong}$}\\
+{\large Ref. Um Curso de Cálculo - Guidorizzi}
+
+\vspace{0.7cm}
+\textbf{Autor: Xenônio}\\
+Discord: xennonio
+\end{center}
+
+\tableofcontents
+
+\section{Motivação}
+
+\subsection{Axiomas de Corpo Ordenado (OF)}
+
+Para que possamos formalizar os reais, utilizaremos noções e fatos que são usuais na ZFC, em particular, assumindo ela como nossa metateoria, ou trabalhando dentro da ZFC, provaremos que é possível criar um modelo $M$ para os Reais.
+
+Antes de tudo precisamos, portanto, definir o que são os reais. Há uma ideia intuitiva do que de fato é $\mbb{R}$ como uma reta, mas para formalização completa listamos alguns axiomas que são propriedades básicas que $\mbb{R}$ satisfaz, conhecidas como axiomas de corpos ordenados (OF).
+
+Seja $\mc{S}=\{+,\cdot,\leq,0,1\}$ nossa linguagem, então as fórmulas de primeira ordem que constituem OF:
+
+(O1): $\forall x$, $x\leq x$\\
+(O2): $\forall x,y$, se $x\leq y$ e $y\leq x$, então $x=y$\\
+(O3): $\forall x,y,z$, se $x\leq y$ e $y\leq z$, então $x\leq z$\\
+(O4): $\forall x,y$, $x\leq y$ ou $y\leq x$\\
+(O5): $\forall x,y,z$, se $x\leq y$, então $x+z\leq y+z$\\
+(O6): $\forall x,y,z$, se $x\leq y$ e $z\geq0$, então $x\cdot z\leq y\cdot z$
+
+(A1): $\forall x,y,z$ $x+(y+z)=(x+y)+z$\\
+(A2): $\forall x,y$ $x+y=y+x$\\
+(A3): $\forall x$ $x+0=0+x=x$\\
+(A4): $\forall x\exists y$ tq $x+y=y+x=0$
+
+(M1): $\forall x,y,z$ $x\cdot(y\cdot z)=(x\cdot y)\cdot z$\\
+(M2): $\forall x,y$ $x\cdot y=y\cdot x$\\
+(M3): $\forall x$ $x\cdot1=1\cdot x=x$\\
+(M4): $\forall x\neq0\exists y$ tq $x\cdot y=y\cdot x=1$
+
+(D): $\forall x,y,z$ $x\cdot(y+z)=(x\cdot y)+(x\cdot z)$
+
+onde $O=\{\text{O1, O2, O3, O4}\}$ formam os axiomas de uma ordenação linear, i.e., reflexividade, antisimetria, transitividade e total, respectivamente. Analogamente $A=\{\text{A1, A2, A3, A4}\}$ e $M=\{\text{M1, M2, M3, M4}\}$ formam os axiomas de adição e multiplicação, sendo eles associatividade, comutatividade, elemento neutro e existência de inverso. E por último $\{\text{O5, O6, D}\}$ relacionam ambas as operações com a relação de ordem, e as operações entre si por meio da distributividade.
+
+De fato, temos que, intuitivamente, $(\mbb{R},+,\cdot,\leq,0,1)\vDash\text{OF}$, entretanto este não é o único modelo para OF, uma vez que, digamos, $(\mbb{Q},+,\cdot,\leq,0,1)\vDash\text{OF}$ também. Em particular, sabemos por Löwenhein-Skolem que nenhuma estrutura infinita pode ser caracterizada até o isomorfismo, então em particular precisamos de algum axioma adicional $\varphi$ de segunda ordem.
+
+\subsection{Definição de $\mf{R}$}
+
+Com isso podemos, após construir $\mf{R}$, provar que se $\mf{R},\mf{A}\vDash\text{OF}+\varphi$, com $\mf{R}=(\mbb{R},+,\cdot,\leq,0,1)$ e $\mf{A}=(K,\oplus,\odot,\preceq,0',1')$, então $\mf{R}\cong\mf{A}$, i.e., existe um isomorfismo $f:\mbb{R}\to K$ preservando funções, constantes e relações, ou seja, $f(x+y)=f(x)\oplus f(y)$, $f(x\cdot y)=f(x)\odot f(y)$, $f(0)=0'$, $f(1)=1'$ e $x\leq y$ sse $f(x)\preceq f(y)$, de fato é possível provar que tal isomorfismo é único.
+
+Feito isso, provamos que um desenvolvimento do cálculo ou de alguma teoria baseada somente nos axiomas $\text{OF}+\varphi$ é justificada e bem definida, uma vez que, assumindo a ZFC como metateoria, provamos que a teoria é de fato consistente, visto que possui um modelo, e este modelo é único até o isomorfismo, logo esetamos trabalhando em uma única estrutura.
+
+Cabe a nós, agora, não só construir um modelo $\mf{R}$, como determinar qual axioma $\varphi$ podemos utilizar.
+
+Há duas escolhas comuns a tal axioma, em particular o Axioma da Completude (AoC), ou a conjunção do Axioma Dos Intervalos Encaixantes (NIP) com a Propriedade Arquimediana (AP). O primeiro é o seguinte axioma de segunda ordem, que diz:
+
+Para todo $S\subseteq\mbb{R}$ com $S\neq\emptyset$, se existe $M$ tal que $M\geq x$, $\forall x\in S$, i.e., $M$ é um limitante superior de $S$, então existe $s$ tal que $s$ é um limitante superior de $S$ e, para todo $s'$ limitante superior de $S$, temos $s\leq s'$.
+
+Em outras palavras, todo subconjunto $S$ de $\mbb{R}$ não-vazio e limitado superiormente admite supremo.
+
+Os outros dois, NIP e AP, são também axiomas de segunda ordem, em particular o primeiro diz que:
+
+Se $I_n=[a_n,b_n]$ é uma sequência de intervalos tais que $I_{n+1}\subseteq I_n$ e $|I_n|\to0$, então existe exatamente um real $x$ tal que $x\in\bigcap_{n\geq0}I_n$.
+
+Entretanto, tal teorema não é suficiente para caracterizar $\mbb{R}$ até o isomorfismo, precisamos também da propriedade arquimediana:
+
+Para todo $\varepsilon>0$, existe $n\in\mbb{N}$ tal que $\frac{1}{n}<\varepsilon$.
+
+\textbf{Obs:} Podemos também, na presença de AP, tomar outro axioma ao invés de NIP, como por exemplo o Critério de Cauchy (CC), que diz que toda sequência de cauchy é convergente.
+
+Analogamente, se substituirmos AoC pelo Teorema de Bolzano-Weierstrass (BW) ou o Teorema da Convergência Monótona (MCT) teremos uma formalização equivalente dos  corpos ordenados completos.
+
+Em particular, até o fim do material, tomaremos $\varphi=$AoC.
+
+\subsection{Motivação de Cortes}
+
+Richard Dedekind teve a ideia de formalizar os reais por meio de cortes após ser motivado pelo seguinte teorema:
+
+\cl{blue!15}
+\begin{shaded}
+\begin{theorem}
+    Seja $f:(a,b)\to\mbb{R}$ crescente
+
+    a) Se $f$ for limitada superiormente em $(a, b)$, então
+    $$\lim_{x\to b^-}f(x)=\sup\underbrace{\{f(x):x\in(a,b)\}}_L$$
+
+    b) Se $f$ não for limitada superiormente em $(a,b)$, então
+    $$\lim_{x\to b^-}f(x)=\infty$$
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    a) Como $L$ é não-vazio e limitado superiomente ele admite um supremo $s$. Assim, para todo $\varepsilon>0$, temos que existe $y\in\im{f}$ tal que $s-\varepsilon<y\leq s$, visto que, caso contrário, $s-\varepsilon\geq y$ para todo $y\in\im{f}$, contradizendo que $s$ é o menor limitante superior. Como $y\in\im{f}$, existe $x_1\in(a,b)$ tal que $s-\varepsilon<f(x_1)\leq s$ e, como $f$ é crescente, para todo $x\in(x_1,b)$
+    $$s-\varepsilon<f(x_1)\leq f(x)\leq s<s+\varepsilon$$
+    ou seja, $|f(x)-s|<\varepsilon$.
+
+    b) Como $f$ é ilimitada, para todo $M>0$ existe $x_1\in(a,b)$ tal que $f(x_1)>M$. Como $f$ é crescente, então pra todo $x\in(x_1,b)$, $f(x)>M$, logo $f$ explode.
+\end{proof}
+
+Tendo motivado, passaremos agora para a definição de $\mf{R}$ e provaremos que tal construção satisfaz todos os axiomas de OF e AoC.
+
+\section{Construção de $\mf{R}$}
+
+\subsection{Cortes de Dedekind à Esquerda}
+
+Assumindo a ZFC ou algum fragmento mais fraco suficiente para fazer teoria dos conjunto básicas, assuma que já construímos $(\mbb{Q},+_\mbb{Q},\cdot_\mbb{Q},<,0_\mbb{Q},1_\mbb{Q})$.
+
+\cl{blue!15}
+\begin{shaded}
+    \begin{definition}
+    Definimos um corte de Dedekind à esquerda, ou simplismente um corte como $r\subseteq\mbb{Q}$ tal que:
+
+    (R1) $r$ é um subconjunto, não-vazio, próprio de $\mbb{Q}$, i.e. $\emptyset\neq r\neq\mbb{Q}$;
+
+    (R2) $r$ é "fechado à esquerda", i.e., se $q\in r$ e $p< q$, então $p\in r$;
+
+    (R3) $r$ não admite máximo, i.e., para todo $p\in r$, existe $q\in r$ tal que $p< q$.
+\end{definition}
+\end{shaded}
+
+Um número real é definido como um corte de Dedekind à esquerda e o conjunto $\mbb{R}$ de todos os cortes é denominado conjunto dos números reais. Obviamente $\mbb{R}$ existe, visto que a fórmula $\varphi$ que define um corte através de todas as propriedades (R1), (R2) e (R3) é uma fórmula de primeira ordem e
+$$\mbb{R}:=\{x\in\mc{P}(\mbb{Q}):\varphi(x)\}$$
+está bem definido pelo axioma da potência e da especificação.
+
+\subsection{Exemplos}
+
+Como exemplo, seja $\alpha=\{p\in\mbb{Q}:p< 2\}$, mostraremos que $\alpha\in\mbb{R}$
+
+\cl{orange!15}
+\begin{shaded}
+\begin{theorem}
+    $\alpha$ satisfaz (R1), (R2) e (R3).
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    (R1): como $0< 2$, por definição $0\in\alpha$, logo $\alpha\neq\emptyset$, ademais $2$ não é menor que $2$, portanto $2\notin\alpha$, portanto $\alpha\neq\mbb{Q}$.
+
+    (R2): Se $p< 2$ e $q< p$, pela transitividade de $<$ temos que $q< 2$, i.e., $q\in\alpha$.
+    
+    (R3) Dado $p\in\alpha$, por definição $p< 2$, provaremos que existe $q\in\alpha$ tal que $p< q$. Seja $q = p + \frac{2 - p}{2} = \frac{p + 2}{2}$, como $p\in\mbb{Q}$, então $q\in\mbb{Q}$. Ademais $q=\frac{p}{2}+1< 1+1=2$, visto que $p< 2$, portanto $q\in\alpha$ e, como $p< 2$, então $0< 2-p$, logo $q=p + \frac{2-p}{2}>2$.
+\end{proof}
+
+\begin{shaded}
+\begin{theorem}
+    Mostraremos que, dado $r\in\mbb{Q}$, podemos identificar $r^*:=\{p\in\mbb{Q}:p< r\}$ como $r$ em $\mbb{R}$, i.e., provaremos que $r^*$ é um real.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    De fato, isso é o primeiro passo para provar que existe uma imersão $\iota:\mbb{Q}\to\mbb{R}$ de $\mbb{Q}$ em $\mbb{R}$, onde todas as operações definidas em $\mbb{Q}$ podem ser transportadas para $\mbb{Q}^*:=\iota(\mbb{Q})$.
+
+    (R1) Como $r-1\in r^*$, então $r^*$ é não-vazio. Ademais, $r\notin r^*$, portanto $r^*\neq\mbb{Q}$.
+
+    (R2) dados $p,q\in r^*$ com $p\in r^*$ e $q< p$, por definição $p< r$ e, se $q< p$, por transitividade $q< r$, portanto $q\in r^*$.
+
+    (R3) Dado $p\in r^*$, defina $q=p+\frac{r-p}{2}=\frac{p+r}{2}$, como $p,r\in\mbb{Q}$, então $q\in\mbb{Q}$. Além disso, de $p\in r^*$ concluímos que $p< r$, logo $q=\frac{p}{2}+\frac{r}{2}<\frac{r}{2}+\frac{r}{2}=r$, i.e., $q\in r^*$. Ademais, como $p< r$, então $r - p > 0$, logo $q=p+\frac{r-p}{2}> p$.
+\end{proof}
+
+Como um exemplo adicional considere
+$$r=\mbb{Q}_{<0}\cup\{p\in\mbb{Q}:p^2< 2\}$$
+provaremos que $r\in\mbb{R}$
+
+\begin{proof}
+Para isso, note que $0\in r$, logo $r\neq\emptyset$. Analogamente $2\notin r$, visto que $2>0$ e $2^2>2$.
+
+Se $p\in r$ e $q<p$, então, se $q< 0$, obviamente $q\in r$, seja portanto $q\geq0$, logo, como $0\leq q< p$, então $q^2< p^2< 2$, i.e., $q\in r$.
+
+Por último, queremos $q\in r$ tal que $p< q<2$, para isso, queremos garantir que existe $n\in\mbb{N}$ positivo tal que $q:=p+\frac{1}{n}$ satisfaz $q^2=\rp{p+\frac1n}^2< 2$, i.e.
+\begin{align*}
+    p^2 + \frac{2p}{n} + \frac{1}{n^2} & < 2\\
+    \frac1n\rp{2p+\frac1n} & < 2-p^2
+\end{align*}
+como $n>0$, então queremos
+$$\frac1n\rp{2p+\frac1n}<\frac1n\rp{2p+1}< 2-p^2$$
+ou seja, basta tomarmos
+$$n>\frac{2p+1}{2-p^2}$$
+que, pela propriedade arquimediana, é garantido existir.
+\end{proof}
+
+\subsection{Relação de Ordem $\leqr$}
+
+Definiremos agora a noção de ordem $\leqr$ em $\mbb{R}$:
+
+\cl{blue!15}
+\begin{shaded}
+\begin{definition}
+    Se $r,s\in\mbb{R}$, definimos
+    $$r\leqr s\text{ sse }r\subseteq s$$
+    e
+    $$r<_\mbb{R}s\text{ sse }r\leqr s\text{ e }r\neq s$$
+\end{definition}
+\end{shaded}
+
+Com isso, vamos provar que $(\mbb{R},\leqr)\vDash\text{O}$
+
+\cl{orange!15}
+\begin{shaded}
+\begin{theorem}
+    $(\mbb{R},\leqr)$ é uma ordem total, ou linear.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Precisamos verificar que $(\mbb{R},\leqr)\vDash\{\text{O1, O2, O3, O4}\}$ onde
+    \begin{align*}
+        (\text{O1}) & \text{ reflexivo: }\forall r\in\mbb{R}(r\leqr r)\\
+        (\text{O2}) & \text{ anti-simétrico: }\forall r,s\in\mbb{R}(r\leqr s\wedge s\leqr r\to r = s)\\
+        (\text{O3}) & \text{ transitivo: }\forall r,s,t\in\mbb{R}(r\leqr s\wedge s\leqr t\to r\leqr t)\\
+        (\text{O4}) & \text{ linear: }\forall r,s\in\mbb{R}(r\leqr s\vee s\leqr r)
+    \end{align*}
+
+    (O1), (O2) e (O3) seguem diretamente do fato de que $\subseteq$ é uma relação de ordem parcial.
+
+    Para demonstrar (O4) sejam $\alpha,\beta\in\mbb{R}$, temos que $\alpha\subseteq\beta$ ou $\alpha\nsubseteq\beta$, no primeiro caso $\alpha\leqr\beta$, caso contrário existe $a\in\alpha$ tal que $a\notin\beta$, i.e., $a\geq_\mbb{R} b,\forall b\in\beta$, portanto $b\in\alpha$, i.e., $\beta\subseteq\alpha$.
+\end{proof}
+
+\subsection{Adição $\oplus$ em $\mbb{R}$}
+
+Com o intuito de definir a adição $r\oplus s$ de reais vamos antes garantir que ela faz sentido:
+
+\begin{shaded}
+\begin{theorem}
+    Se $r,s\in\mbb{R}$, então
+    $$\gamma:=\{p+q:p\in r,q\in s\}$$
+    é um real.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Como $r,s\in\mbb{R}$, então ambos são não-vazios, i.e., existe $p\in r$ e $q\in s$, portanto $p+q\in\gamma$, i.e., $\gamma\neq\emptyset$. Analogamente, como $r,s\neq\mbb{Q}$, existem $p\notin r$ e $q\notin s$, portanto $p\geq x$, $\forall x\in r$ e $q\geq y$, $\forall y\in s$, portanto $p+q\geq x+y$, $\forall x,y\in\mbb{Q}$, i.e., $p+q\notin\gamma$, logo $\gamma\neq\mbb{Q}$.
+
+    Se $x\in\gamma$ e $y< x$, por definição existem $p\in r$ e $q\in s$ tais que $x=p+q$, logo $y< x=p+q$, portanto $y-p< q\in s$, como $s$ é um real, então ele é fechado à esquerda, logo $y-p\in s$ e, portanto, $y=(y-p)+p\in\gamma$, visto que $p\in r$ e $y-p\in s$, então $\gamma$ é fechado à esquerda.
+
+    Se $x\in\gamma$, então $x=p+q$ com $p\in r$ e $q\in s$, mas como $r,s\in\mbb{R}$, então existem $p'\in r$ e $q'\in s$ tal que $p'> p$ e $q'> q$, portanto $p'+q'> p+q$ e $p'+q'\in\gamma$, portanto $\gamma$ não tem máximo.
+\end{proof}
+
+Com isso, podemos então definir
+
+\begin{shaded}
+\begin{theorem}
+    Dados $r,s\in\mbb{R}$, definimos
+    $$r\oplus s:=\{p+q:p\in r,q\in s\}$$
+\end{theorem}
+\end{shaded}
+
+Provaremos que $(\mbb{R},\oplus)\vDash A$. Mas, para isso, vamos antes precisar de 2 lemas prévios:
+
+\cl{purple!15}
+\begin{shaded}
+\begin{lemma}
+    Dado $r\in\mbb{R}$, defina
+    $$M_r:=\{p\in\mbb{Q}:p\geq x,~\forall x\in r\}$$
+    então temos que (para quando $\min(M_r)$ existe)
+    $$(-r):=\{p\in\mbb{Q}:-p\in M_r, -p\neq\min(M_r)\}$$
+    é um número real.
+\end{lemma}
+\end{shaded}
+
+\begin{proof}
+    Como $r\neq\mbb{Q}$, existe $t\notin r$, i.e., $t>x$, $\forall x\in r$, portanto $t\in M_r$, note que, se $t\in M_r$, $t+1\in M_r$. Considere $-t$ e $-(t+1)$, no mínimo um desses é diferente de $\min(M_r)$, digamos $t$, logo $t\in(-r)$, i.e., $(-r)$ é não-vazio. Temos também que, se $p\in r$, então existe $q\in r$ tq $p< q$, logo $p\notin M_r$, i.e., $-p\notin (-r)$, visto que, caso contrário, $-(-p)=p\in M_r$, então $(-r)\neq\mbb{Q}$
+
+    Seja agora $p\in(-r)$ e $q< p$, como $-p\in M_r$, então $-p> x$, $\forall x\in r$, logo $-q>-p> x$, $\forall x\in r$, i.e., $-q\in M_r$, logo $q\in (-r)$, portanto $(-r)$ é fechado à esquerda.
+
+    Seja $p\in (-r)$, i.e., $-p\in M_r$, como $-p\neq\min(M_r)$, então existe $q\in M_r$ tq $q<-p$ (se $q=\min(M_r)$ peguemos a média aritmética entre ambos), assim $-q> p$ e $-q\in(-r)$, logo $(-r)$ não admite máximo.
+\end{proof}
+
+\begin{shaded}
+\begin{lemma}
+    Se $r\in\mbb{R}$ e $u\in0^*$, então existem $p\in r$ e $q\in M_r$, $q\neq\min(M_r)$ (se existir) tais que $p-q=u$.
+\end{lemma}
+\end{shaded}
+
+\begin{proof}
+    Como $r\in\mbb{R}$, existe $s\notin r$. Defina $q_n:=un+s$, i.e., uma sequência decrescente partindo de $q_0=s$. Tomando $\ol{n}:=\min\{n\in\mbb{N}:q_n\in M_r\}$, que está bem definido pelo princípio da boa ordenação. Por definição temos que $q_{\ol{n}}\in M_r$, agora:
+
+    Se $q_{\ol{n}+1}\in\alpha$, então tome $p=q_{\ol{n}+1}$ e $q=q_{\ol{n}}$, logo $p-q=u$;
+
+    Se $q_{\ol{n}+1}=\min(M_r)$, então tome $p=q_{\ol{n}+1}+\frac12u$ e $q=q_{\ol{n}}+\frac12u$, logo $p\in r$ e $q\in M_r$, com $p-q=u$.
+\end{proof}
+
+\cl{orange!15}
+\begin{shaded}
+\begin{theorem}
+    $(\mbb{R},\oplus)$ satisfaz os axiomas de adição.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    (A1): Dados $x,y,z\in\mbb{R}$, se $p\in x\oplus(y\oplus z)$, então existe $x'\in x$, $a\in y\oplus z$ tal que $p=x'+a$, mas como $a\in y\oplus z$, existem $y'\in y$ e $z'\in z$ tais que $p=x'+(y'+z')=(x'+y')+z'$, i.e., $p\in(x\oplus y)\oplus z$. Portanto $x\oplus(y\oplus z)\subseteq(x\oplus y)\oplus z$, a inclusão contrária é análoga.
+
+    (A2): Se $x,y\in\mbb{R}$ e $p\in x\oplus y$, então existem $a\in x$ e $b\in y$ tais que $p=a+b=b+a$, portanto $p\in y\oplus x$, a inclusão contrária também é análoga.
+
+    (A3): Queremos mostrar que $r\oplus 0^*=r$. Note que, se $x\in r\oplus0^*$, então existe $p\in r$ e $q\in0^*$ tais que $x=p+q$, por definição $q<0$, logo $x=p+q<p$, como $r$ é fechado à esquerda, $x\in r$, portanto $r\oplus0^*\subseteq r$. Analogamente, seja $x\in r$, então existe $p\in r$ tal que $x<p$, visto que $r$ não tem máximo, portanto $x-p<0$, i.e., $x-p\in0^*$, logo $x=p+(x-p)\in r\oplus0^*$.
+
+    (A4): Mostraremos que, para $r\in\mbb{R}$, temos $r\oplus(-r)=0^*$. Se $x\in r\oplus(-r)$, então existe $p\in r$ e $q\in(-r)$ tq $x=p+q$. Como $q\in(-r)$, então $-q\in M_r$, logo $-q\notin r$, i.e., $-q> x$, $\forall x\in r$, em particular $-q> q$, i.e., $0> q + p = x$, logo $x\in 0^*$. Para a volta, seja $x\in0^*$, pela Lema anterior, existem $p\in r$ e $q\in M_r$ com $q\neq\min(M_r)$, se existir, tais que $p-q=x$. Como $q\in M_r$, então $-q\in(-r)$, i.e., $x = p + (-q) \in r\oplus(-r)$, logo $0^*\subseteq r\oplus(-r)$.
+\end{proof}
+
+Tendo $\leqr$ e $\oplus$ definidos, provaremos agora O5:
+
+\begin{shaded}
+\begin{theorem}
+    $(\mbb{R},\leqr,\oplus)\vDash\text{O5}$
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Se $p,q,r\in\mbb{R}$ e $p\leq q$, então se $x=p\oplus r$, temos que existem $a\in p$ e $b\in r$ tais que $x=a+b$, como $a\in p$ e $p\leq q$, então $a\in q$ e, portanto, $x\in q+r$, logo $p+r\leq q+r$.
+\end{proof}
+
+\begin{shaded}
+\begin{theorem} \textbf{(Unicidade do Oposto)} Se $r\oplus p=0^*$ e $r\oplus q=0^*$, então $p=q$.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    $$p=p\oplus0^*=p\oplus(r\oplus q)=(p\oplus r)\oplus q=0^*\oplus q=q$$
+\end{proof}
+
+\begin{shaded}
+\begin{theorem} \textbf{(Unicidade do Elemento Neutro)} Se $r\oplus s=r$, para todo $r\in\mbb{R}$, então $s=0^*$.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Como vale para todo $r\in\mbb{R}$, em particular vale para $0^*$, logo
+    $$0^*\oplus s=s=0^*$$
+\end{proof}
+
+\subsection{Multiplicação $\odot$ em $\mbb{R}$}
+
+A fim de definirmos multiplicação em $\mbb{R}$ precisamos antes garantir que o seguinte número está bem definido:
+
+\begin{shaded}
+\begin{theorem}
+    Sejam $r,s\in\mbb{R}$ com $r,s>_\mbb{R}0^*$, então
+    $$\gamma:=\mbb{Q}_{<0}\cup\{p\cdot q:p,q>0, p\in r, q\in s\}$$
+    é um número real
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Vamos antes provar que $\gamma$ não admite máximo. Se $p\in\gamma$, com $p>0$, então $p=ab$, para $a\in r$ e $b\in s$ ambos positivos, como $r,s\in\mbb{R}$, existem $a'\in r$, com $a'>a$ e $b'\in s$, com $b'>b$, portanto $a'b'>ab=p$, com $a'b'\in\gamma$.
+
+    Como $\mbb{Q}_{<0}\subseteq\gamma$ e o primeiro é não-vazio, então $\gamma\neq\emptyset$. Além disso, como $r,s\in\mbb{R}$ existem $p\notin r$ e $q\notin s$, logo $p>x$, $\forall x\in r$ e $q>x$, $\forall x\in s$, então em particular vale para $x>0$ em ambos os casos, logo $pq>xy>0$, para todo $x\in r$, $y\in s$, com $x,y>0$. Se $pq\in\gamma$, então temos que $pq>x$, $\forall x\in\gamma$, contradizendo que $\gamma$ não admite máximo, portanto $pq\notin\gamma$, i.e., $\gamma\neq\mbb{Q}$.
+
+    Seja $p\in\gamma$ e $q<p$. Se $p\leq 0$, então $q\in\gamma$, visto que $q<p\leq 0$. Se $p>0$ e $q\leq 0$, então $q\in\gamma$, visto que, se $q<0$, $q\in\gamma$, e se $q=0$, então $p\cdot q=0=q\in\gamma$. Seja portanto $p,q>0$, logo $p=ab$, com $a\in r$, $b\in s$ e $a,b>0$. Como $q<p=ab$, então $\frac{q}{a}<b\in s$, logo $\frac{q}{a}\in s$ e, portanto $q=\frac{q}{a}\cdot a\in\gamma$.
+\end{proof}
+
+\cl{blue!15}
+\begin{shaded}
+\begin{definition}
+    Sejam $r,s\in\mbb{R}$, defina
+    $$r\odot s:=\begin{cases}
+        \mbb{Q}_{<0}\cup\{p\cdot q:p\in r, q\in s, p,q>0\}\text{ se }r,s>_\mbb{R}0^*\\
+        0^*\text{ se }r=0^*\text{ ou }s=0^*\\
+        -((-r)\odot s)\text{ se }r<_\mbb{R}0^*\text{ e }s>_\mbb{R}0^*\\
+        -(r\odot(-s))\text{ se }r>_\mbb{R}0^*\text{ e }s<_\mbb{R}0^*\\
+        (-r)\odot(-s)\text{ se }r<_\mbb{R}0^*\text{ e }s<_\mbb{R}0^*
+    \end{cases}$$
+\end{definition}
+\end{shaded}
+
+Como exemplo, vamos provar que se $r=\mbb{Q}_{<0}\cup\{p\in\mbb{Q}:p^2<2\}$, então $r\odot r=2^*$. Por definição
+$$r\odot r=\mbb{Q}_{<0}\cup\{p\cdot q:p^2,q^2<2, p,q>0\}$$
+Se $x\in r\odot r$, se $x\leq0$, então $x\in2^*$, assuma portanto que $x>0$, logo $x=ab$ com $a^2,b^2<2$ e $a,b>0$, logo $x^2=a^2b^2<4$ e, portanto, $x<2$, ou seja, $x\in2^*$.
+
+Analogamente, se  $x\in2^*$, então $x^2<4$, i.e., $\frac{x^2}{2}<2$. Queremos encontrar $a\in r$ tal que $\frac{x}{a}\in r$, visto que, se conseguirmos, então $a\cdot\frac{x}{a}=x\in r$. Se $a\in r$, então $a^2<2$, com $a>0$, então em particular basta garantirmos que existe $a$ tal que $\frac{x^2}{2}<a^2<2$. Se $\frac{x^2}{2}\leq1$, obviamente existe $1<a^2<2$ racional. Se $y=\frac{x^2}{2}>1$, então queremos $n\in\mbb{N}$ tal que
+$$\rp{1 + \frac1n}^2<y,\frac2y$$
+como
+$$\rp{1+\frac1n}^2=1+\frac2n+\frac{1}{n^2}\leq 1+\frac3n$$
+basta tomar $n$ tal que
+$$1+\frac3n<\ol{y}:=\min\rp{y,\frac2y}$$
+ou seja
+$$n>\frac{3}{\ol{y}-1}$$
+que é garantido existir pela propriedade arquimediana. Seja $(a_i):=\rp{1+\frac1n}^{2i}$. Agora note que, como $a_1<y,\frac2y$, então
+$$a_2=\rp{1+\frac1n}^4=\rp{1+\frac1n}^2\cdot\rp{1+\frac1n}^2<y\cdot\frac2y=2$$
+se $y<a_2<2$, então estamos feitos, caso contrário $a_2<y$ e, como $a_1<\frac2y$, então $a_1\cdot a_2=a_3<2$, repetindo o argumento, é fácil ver por indução que, enquanto $a_n<y$, teremos $a_{n+1}<y$, mas $(a_i)$ é estritamente crescente e, portanto, eventualmente será maior que $y$, logo algum elemento da sequência está entre $2$ e $y$.
+
+Provamores agora que $(\mbb{R},\odot)\vDash M$, mas para isso, antes vamos precisar de um lema prévio, análogo ao utilizado na adição.
+
+\cl{purple!15}
+\begin{shaded}
+\begin{lemma}
+    Sejam $r\gtr0^*$ um número real e $u\in\mbb{Q}$ com $0<u<1$. Então existem $p\in r$, $q\in M_r$, (com $q\neq\min(M_r)$ caso exista) tais que $\frac{p}{q}=u$.
+\end{lemma}
+\end{shaded}
+
+\begin{proof}
+    Como $r\in\mbb{R}$, em particular existe $s\notin r$, logo $s>x$, $\forall x\in r$. Defina $q_n:=su^n$, temos $q_0=s$ e $(q_i)$ estritamente decrescente, visto que $0<u<1$. Assim, o princípio da boa ordenação garante que $\ol{n}:=\min\{n\in\mbb{N}:q_n\in M_r\}$ existe e está bem definido. Por construção de $\ol{n}$, vale então que $q_{\ol{n}}\in M_r$ e:
+
+    Se $q_{\ol{n}+1}\in r$, então tome $p=q_{\ol{n}+1}$ e $q=q_{\ol{n}}$, logo $\frac{p}{q}=u$;
+
+    Se $q_{\ol{n}+1}=\min(M_r)$, então tome $p=q_{n+1}\sqrt{u}$ e $q=q_{\ol{n}}\sqrt{u}$, logo $p\in r$, $q\in M_r$ e $\frac{p}{q}=u$.
+\end{proof}
+
+\cl{orange!15}
+\begin{shaded}
+\begin{theorem}
+    $(\mbb{R},\odot)$ Satisfaz os axiomas de multiplicação.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    (M1): Se $x\in(\alpha\odot\beta)\odot\gamma$ e algum deles são $0^*$, por definição o produto é $0^*$ e vale (M1). Se $\alpha,\beta,\gamma\gtr0^*$ e $x\leq0$, então $x\in\alpha\odot(\beta\odot\gamma)$. Seja então $x>0$, logo existem $y\in\alpha\odot\beta$ e $c\in\gamma$, com $y,c>0$, tais que $x=y\cdot c$. Como $y\in\alpha\odot\beta$, então existem $a\in\alpha$ e $b\in\beta$ tais que $y=a\cdot b$, logo $x=(a\cdot b)\cdot c=a\cdot(b\cdot c)$, i.e., $x\in\alpha\odot(\beta\odot\gamma)$. A inclusão contrária é análoga e, os casos onde $\alpha,\beta$ ou $\gamma$ são negativos é, pela definição de $\odot$, também análogo, visto que se reduzem ao produto de reais positivos.
+
+    (M2): Seja $x\in r\odot s$, se $r$ ou $s$ valem $0^*$ (M3) é trivialmente verificado, assuma então $r,s\gtr0^*$, se $x\leq0$, então $x\in s \odot r$. Seja portanto $x>0$, logo existem $a\in r$ e $b\in s$, com $a,b>0$ tais que $x=a\cdot b=b\cdot a$, logo $x\in s \odot r$, onde a inclusão contrária é análoga. Obviamente os outros casos para $r$ e $s$ menores que $0^*$ seguem do caso anterior, visto que, por definição de $\odot$, eles são reduzidos a multiplicação de reais positivos.
+
+    (M3): Se $r=0^*$, então a igualdade é trivialmente verificada. Seja portanto $r\gtr0^*$, se $x\in r\odot1^*$ e $x\leq0$, então $x\in r$, seja então $x>0$, logo existem $a\in r$ e $u\in 1^*$, com $a>0$ e $0<u<1$, tais que $x=a\cdot u<a$, logo $x\in r$.
+
+    Se $x\in r$ com $x\leq0$, então $x\in r\odot1^*$, seja portanto $x>0$, logo existe $a\in r$ com $x<a$, i.e., $\frac{x}{a}<1$, então $\frac{x}{a}\in1^*$, como $x=a\cdot\frac{x}{a}$, então $x\in r\odot1^*$.
+
+    Se $r\ltr0$, por definição
+    $$r\odot1^*=-((-r)\odot1^*)=-(-r)=r$$
+    Para ver isso, precisamos primeiro provar que, se $r\ltr0^*$, então $0^*\ltr(-r)$:
+    \begin{align*}
+        r\ltr0^* & \iff r \oplus (-r) \ltr 0^* \oplus (-r)\tag{O5}\\
+        & \iff 0^* \ltr 0^* \oplus (-r)\tag{A4}\\
+        & \iff 0^* \ltr -r\tag{A3}
+    \end{align*}
+    Analogamente, para mostrar que $-(-r)=r$, temos que:
+    \begin{align*}
+        (-r) \oplus (-(-r)) & = 0^*\tag{A4}\\
+        r \oplus ((-r) \oplus (-(-r))) & = 0^* \oplus  r\\
+        (r \oplus (-r)) \oplus (-(-r)) & = 0^* \oplus r\tag{A1}\\
+        0^* \oplus (-(-r)) & = 0^* \oplus r\tag{A4}\\
+        -(-r)) & = r\tag{A3}
+    \end{align*}
+
+    (M4): Se $r>0^*$, seja
+    $$s:=\mbb{Q}_{<0}\cup\left\{p\in\mbb{Q}:p>0,\frac1p\in M_r\text{ e }\frac1p\neq\min(M_r)\right\}$$
+    Se $x\in r\odot s$ e $x\leq0$, então $x\in1^*$, assuma portanto $x>0$, logo existem $p\in r$ e $q\in s$ tais que $x=p\cdot q$, com $p,q>0$. Por definição $\frac1q\in M_r$, logo $\frac1q>y$, $\forall y\in r$, em particular $\frac1q>p$, i.e., $1>pq=x$, logo $x\in1^*$ e, portanto, $r\odot s\subseteq1^*$.
+
+    Para o caminho contrário seja $x\in1^*$, se $x\leq0$, $x\in r\odot s$, seja portanto $0<x<1$, pelo lema anterior existem $p\in r$ e $q\in M_r$, com $q\neq\min(M_r)$ caso existe, tais que $\frac{p}{q}=x$, por definição $\frac1q\in s$, logo $x=p\cdot\frac1q\in r\odot s$, logo $1^*\subseteq r\odot s$.
+\end{proof}
+
+Por fim, podemos provar os teoremas que relacionam ambas as operações e a relação de ordem
+
+\begin{shaded}
+\begin{theorem}
+    $(\mbb{R},\oplus,\odot)\vDash\text{D}$.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Para mostrar que $r\odot(p \oplus q)=(r\odot p)\oplus (r\odot q)$ vamos dividir em alguns casos:
+
+    \textbf{Caso 1.} $r,p, q\gtr0^*$. Se $x\in r\odot(p \oplus q)$ e $x\leq 0$, então $x\in(r\odot p)\oplus(r\odot q)$. Seja portanto $x>0$, logo $x=ay$, para algum $a>0$ em $r$ e $y>0$ em $p\oplus q$., logo $y=b+c$, para $b,c>0$ com $b\in p$ e $c\in q$. Assim, $x=a(b+c)=ab+ac\in (r\odot p)\oplus(r\odot q)$.
+
+    Para a inclusão contrário, assuma que $x\in (r\odot p)\oplus (r\odot q)$, se $x\leq 0$, temos $x\in r\odot(p\oplus q)$, seja então $x>0$, logo existem $u\in r\odot p$ e $v\in r\odot q$ com $u,v>0$ tais que $x=u+v$. Logo existem $a,a'\in r$, $b\in p$, $c\in q$ com $a,a',b,c>0$ tais que $x=ab+a'c$. Assumindo WLOG que $a'\leq a$ temos $x=ab+a'c\leq ab+ac=a(b+c)\in r\odot(p\oplus q)$.
+
+    \textbf{Caso 2.} $r,p\oplus q\gtr0^*$. Se $p\gtr0^*$, $r\odot(-p)=-(r\odot(-(-p))=-(r\odot p)$ $(\star)$, portanto
+    \begin{align*}
+        r\odot q & = r\odot(q\oplus0^*)\tag{A3}\\
+        & = r\odot(q\oplus(p\oplus(-p)))\tag{A4}\\
+        & = r\odot((q\oplus p)\oplus(-p))\tag{A1}\\
+        & = r\odot((p\oplus q)\oplus(-p)))\tag{A2}\\
+        & = r\odot(p\oplus q)\oplus(r\odot(-p))\tag{Caso 1.}\\
+        & = r\odot(p\oplus q)\oplus(-(r\odot p))\tag{$\star$}\\
+        (r\odot p)\oplus(r\odot q) & = (r\odot(p\oplus q)\oplus(-(r\odot p)))\oplus(r\odot q)\\
+        (r\odot p)\oplus(r\odot q)& = r\odot(p\oplus q)\oplus(-(r\odot p)\oplus(r\odot p))\tag{A1}\\
+        (r\odot p)\oplus(r\odot q) & = r\odot(p\oplus q)\tag{A4}
+    \end{align*}
+    Se $q\gtr0^*$ repita o mesmo processo anterior, mas com $r\odot p$ no começo e adicionando $q\oplus(-q)$.
+
+    \textbf{Caso 3.} $r\gtr0^*$ e $p\oplus q\ltr0^*$, por definição de $\odot$ temos que $r\odot(p\oplus q)=-(r\odot(-(p\oplus q)))$ ($\star$). Além disso, temos que $(\dagger)$:
+    \begin{align*}
+        (p\oplus q)\oplus(-(p\oplus q)) & =0^*\tag{A4}\\
+        (-p)\oplus((p\oplus q)\oplus(-(p\oplus q))) & =(-p)\oplus0^*\\
+        (-p)\oplus(p\oplus (q\oplus(-(p\oplus q)))) & = (-p)\oplus 0^*\tag{A1}\\
+        ((-p)\oplus p)\oplus(q\oplus(-(p\oplus q))) & = (-p)\oplus0^*\tag{A1}\\
+        0^*\oplus(q\oplus(-(p\oplus q))) & = (-p)\oplus 0^*\tag{A4}\\
+        (-q)\oplus(q\oplus(-(p\oplus q))) & = (-q)\oplus(-p)\tag{A3}\\
+        ((-q)\oplus q)\oplus(-(p\oplus q)) & = (-q)\oplus (-p)\tag{A1}\\
+        0^*\oplus(-(q\oplus p)) & = (-q)\oplus(-p)\tag{A4}\\
+        -(q\oplus p) & = (-q)\oplus(-p)\tag{A3}
+    \end{align*}
+    Portanto, temos finalmente que
+    \begin{align*}
+        r\odot(p\oplus q) & = -(r\odot(-(p\oplus q)))\tag{$\star$}\\
+        & = -(r\odot((-q)\oplus(-p)))\tag{$\dagger$}\\
+        & = -((r\odot(-q))\oplus(r\odot(-p)))\tag{Caso 2.}\\
+        & = (-(r\odot(-q)))\oplus(-(r\odot(-p)))\tag{$\dagger$}\\
+        & = (r\odot q)\oplus(r\odot p)
+    \end{align*}
+    para justificar a última igualdade, note que, se $p\ltr0^*$, então $-(r\odot p)=-(-(r\odot(-p)))=r\odot(-p)$ e, se $p\gtr0^*$, então $r\odot(-p)=-(r\odot(-(-p)))=-(r\odot p)$, o caso $p=0^*$ é trivial.
+
+    \textbf{Caso 4.} Se $r\ltr0^*$, basta notar que $(p\oplus q)\odot r=-((p\oplus q)\odot(-r))$ onde $-r\gtr0^*$, portanto voltamos aos casos anteriores. O mesmo ocorre quando $r=0^*$.
+\end{proof}
+
+E, por último
+
+\begin{shaded}
+\begin{theorem}
+    $(\mbb{R},\oplus,\odot,\leqr)\vDash\text{O6}$.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Se $r=p$ ou $q=0$ obviamente vale (O6), seja portanto $r\ltr p$ e $q\gtr0^*$, logo existe $p'\in p$ tal que $p>y$, $\forall y\in r$. Assim, vale que que, se $x\in r\odot p$ com $x\leq0$, então $x\in p\odot q$. Seja, portanto, $x>0$, logo existem $a\in r$, $b\in p$, com $a,b>0$ tais que $x=ab<p'b\in p\odot q$.
+\end{proof}
+
+\section{Axioma do Supremo (AoC)}
+
+Neste capítulo vamos mostrar que a estrutura construída, agora de forma íntegra, $\mf{R}=(\mbb{R},\oplus,\odot,\leqr,0^*,1^*)$ satisfaz de fato todos os axiomas de um corpo ordenado completo. Em particular, para isto, falta somente mostrarmos que $\mf{R}\vDash\text{AoC}$ e, para isso, provaremos um lema antes:
+
+\cl{purple!15}
+\begin{shaded}
+\begin{lemma}
+    Seja $\emptyset\neq A\subseteq\mbb{R}$ limitado superiormente, então
+    $$\gamma:=\bigcup_{\alpha\in A}\alpha$$
+    é um número real.
+\end{lemma}
+\end{shaded}
+
+\begin{proof}
+    (R1): Como $A\neq\emptyset$, existe $r\in A$ e, como $r\in\mbb{R}$, $r\neq\emptyset$, logo $\gamma\neq\emptyset$. Como $A$ é limitado superiormente, existe $m\in\mbb{R}$ tal que $r\leq m$, $\forall r\in A$, em particular, $m\neq\mbb{Q}$, portanto existe $s\notin m$ e, como $r\leq m$, então $s\notin r$, $\forall r\in A$, logo $s\notin\gamma$, i.e., $\gamma\neq\emptyset$.
+
+    (R2): Sejam $p\in\gamma$ e $q<p$, logo existe $r\in A$ tal que $p\in r$, como $r\in\mbb{R}$, $q\in r$, i.e., $q\in\gamma$.
+
+    (R3): Dado $p\in\gamma$, $p\in r$ para algum $r\in A$, como $r\in\mbb{R}$, existe $p'\in r$ tq $p'>p$, logo $p'\in\gamma$.
+\end{proof}
+
+\cl{orange!15}
+\begin{shaded}
+\begin{theorem}\textbf{(Teorema do Supremo)}
+    Se $\emptyset\neq A\subseteq\mbb{R}$ é limitado superiormente, então $A$ admite supremo.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Seja $s=\bigcup_{r\in A}r$, pelo lema anterior $s\in\mbb{R}$, vamos mostrar que $s=\sup(A)$. Por definição de $s$, dado $r\in A$, temos $r\subseteq s$, i.e., $s\geqr r$, $\forall r\in A$, portanto $s$ é cota superior de $A$. Seja $s'$ uma cota superior de $A$, i.e., $s'\geqr r$, $\forall r\in A$, logo $r\subseteq s'$, i.e., $s=\bigcup_{r\in A}r\subseteq s'$, portanto $s\leqr s'$.
+\end{proof}
+
+Isso termina a prova de que $\mf{R}$ é um modelo pros axiomsa de corpo ordenado completo.
+
+\section{Imersão de $\mbb{Q}$ em $\mbb{R}$}
+
+Da mesma forma que fizemos uma imersão, i.e., provamos que existe uma única função $\varphi$ injetora, denominada incorporação canônica, que identifica uma estrutura como subestrutura da outra, de $\mbb{N}$ em $\mbb{Z}=\bigslant{\mbb{N}\times\mbb{N}}{\approx}$ e de $\mbb{Z}$ em $\mbb{Q}=\bigslant{\mbb{Z}\times\mbb{Z}}{\cong}$, faremos o mesmo para $\mbb{Q}$ em $\mbb{R}$.
+
+Em particular, queremos provar que, se $\ol{\mbb{Q}}:=\{r^*:r\in\mbb{Q}\}$, então $\varphi:\mbb{Q}\to\ol{\mbb{Q}}$ definida por $\varphi(r)=r^*$ é um homomorfismo bijetor. Ou seja, $\varphi$ é bijetora e satisfaz:
+
+i) $\varphi(r+s)=\varphi(r)\oplus\varphi(s)$\\
+ii) $\varphi(r\cdot s)=\varphi(r)\odot\varphi(s)$\\
+iii) $r\leq s\iff \varphi(r)\leqr\varphi(s)$
+
+\begin{shaded}
+\begin{theorem}
+    $\varphi:\mbb{Q}\to\ol{\mbb{Q}}$ é bijetora.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+    Seja $r\neq s$, digamos $r<s$, logo $r\in s^*$, mas $r\notin r^*$, i.e., $r^*=\varphi(r)\neq\varphi(s)=s^*$, logo $\varphi$ é uma função injetora.
+
+    Por definição $\im{\varphi}=\ol{\mbb{Q}}$, logo $\varphi$ é sobrejetora.
+\end{proof}
+
+Vamos aproveitar para provar um resultado direto
+
+\cl{purple!15}
+\begin{shaded}
+\begin{lemma}
+    Para todo $p\in\mbb{Q}$, temos que
+    $$-\varphi(p) = \varphi(-p)$$
+\end{lemma}
+\end{shaded}
+
+\begin{proof}
+    
+\end{proof}
+
+\cl{orange!15}
+\begin{shaded}
+\begin{theorem}
+    $\varphi:\mbb{Q}\to\ol{\mbb{Q}}$ é um homomorfismo.
+\end{theorem}
+\end{shaded}
+
+\begin{proof}
+i) Se $x\in\varphi(r)\oplus\varphi(s)=r^*\oplus s^*=\{p+q:p\in r, q\in s\}$, então $x=p+q$, com $p< r$ e $q < s$ racionais, logo $x<r+s$, i.e., $x\in (r+s)^*=\varphi(r+s)$. Logo $\varphi(r)\oplus\varphi(s)\subseteq\varphi(r+s)$.
+
+Analogamente, se $x\in\varphi(r+s)$, então $x<r+s$, ou seja, dado quaisquer $p\in r$ e $q\in s$, i.e., $p<r$ e $q<s$, temos que $p+q<r+s$, logo $p+q\in\varphi(r+s)$, portanto $\varphi(r+s)\subseteq\varphi(r)\oplus\varphi(s)$.
+
+ii) Sejam $r,s>0$, se $x\in\varphi(r)\odot\varphi(s)$ e $x\leq0$, então $x\in (r\cdot s)^*$, seja portanto $x>0$, logo $x=p\cdot q$, com $p\in r$, $q\in s$ e $p,q>0$, assim $p<r$ e $q<s$ e, portanto, $x=pq<rs\in(r\cdot s)^*$. Assuma sem perda de generalidade que $r<0$, logo \textcolor{red}{Pendente}
+
+Assuma agora $r,s<0$, \textcolor{red}{Pendente}
+
+Se $r,s>0$ e $x\in(r\cdot s)^*$, então, se $x\leq0$, $x\in r^*\odot s^*$, assuma então $x>0$, logo $x<r\cdot s$, i.e., $\frac{x}{r}<s$ e, portanto, $x=\frac{x}{r}\cdot r\in r^*\odot s^*$.
+
+Tomando agora \textcolor{red}{Pendente}
+
+iii) Se $r\leq s$, então $x<r\Rightarrow x<s$, i.e., $r^*\subseteq s^*$, e vice-versa.
+\end{proof}
+
+\section{Categoricidade de $\text{OF}+\text{AoC}$}
+
+
+
+
+
+\end{document}
